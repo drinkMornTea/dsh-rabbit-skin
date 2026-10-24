@@ -1,0 +1,63 @@
+{
+  "name": "dsh-rabbit-skin",
+  "version": "0.1.0",
+  "description": "兔子皮肤：把 DSH 的窗口换成木屋里的白兔，体重五档可调。",
+  "author": "caozh",
+  "homepage": "https://github.com/drinkMornTea/dsh-rabbit-skin#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/drinkMornTea/dsh-rabbit-skin.git"
+  },
+  "bugs": {
+    "url": "https://github.com/drinkMornTea/dsh-rabbit-skin/issues"
+  },
+  "keywords": [
+    "dsh",
+    "dsh-plugin",
+    "dsh-skin",
+    "skin",
+    "theme",
+    "rabbit"
+  ],
+  "license": "MIT",
+  "type": "module",
+  "main": "./src/index.js",
+  "exports": {
+    ".": "./src/index.js",
+    "./client": "./lib/client.js",
+    "./package.json": "./package.json"
+  },
+  "files": [
+    "lib/client.js",
+    "lib/client.js.map",
+    "src",
+    "assets",
+    "cordis.patch.yml",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "build": "node ./scripts/build-client.mjs",
+    "test": "node ./scripts/test-skin.mjs",
+    "check": "npm run build && npm test"
+  },
+  "dsh": {
+    "bundle": {
+      "patch": "./cordis.patch.yml"
+    },
+    "client": {
+      "platform": "web",
+      "inject": [
+        "@deepseek-ai/dsh-client-ui-theme",
+        "@deepseek-ai/dsh-client-ui-settings-general",
+        "@deepseek-ai/dsh-client-ui-conversation"
+      ]
+    }
+  },
+  "devDependencies": {
+    "esbuild": "^0.25.0"
+  },
+  "engines": {
+    "dsh": ">=0.2.1-rc.2"
+  }
+}

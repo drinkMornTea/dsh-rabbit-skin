@@ -1,0 +1,280 @@
+/**
+ * Rabbit skin — the parts a token layer cannot express.
+ *
+ * Colors come from the theme token layer (see palette.ts); this file only owns
+ * the art element parked behind the document, and the two controls that live in
+ * host slots.
+ */
+
+/* ---- art layer ---------------------------------------------------------- */
+/*
+ * `body` is already `isolation: isolate` and `background: transparent` in the
+ * shipped shell, so a fixed child at z-index -1 paints behind the app without
+ * covering it. Pointer events stay off: the layer is scenery, not a target.
+ */
+#dsh-rabbit-skin-art {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background-color: #191210;
+  opacity: 0;
+  filter: var(--rabbit-art-filter);
+  transition: opacity 0.45s ease;
+}
+
+body[data-rabbit-skin="on"] #dsh-rabbit-skin-art {
+  opacity: 1;
+}
+
+/*
+ * Three passes over one frame:
+ *   ambient — the same photo blurred wide, so the room reads as a room on any
+ *             viewport instead of a cropped rectangle;
+ *   figure  — the rabbit at full sharpness, standing in the lower right;
+ *   veil    — the warm wash that keeps text legible on top.
+ */
+#dsh-rabbit-skin-art .rabbit-ambient {
+  position: absolute;
+  inset: -80px;
+  background-image: var(--rabbit-frame);
+  /* Zoomed into the room's own corner so the wash is wall, not a second
+     ghost rabbit looming behind the conversation. */
+  background-position: 100% 100%;
+  background-size: 240%;
+  filter: blur(28px) saturate(1.08) brightness(1.04);
+}
+
+/* The rabbit itself, standing in the free space right of the conversation
+   column. Only its left and top edges are feathered: the right and bottom
+   edges are the viewport corner and stay crisp. */
+#dsh-rabbit-skin-art .rabbit-figure {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  width: min(54vh, 46vw);
+  aspect-ratio: 1;
+  background-image: var(--rabbit-frame);
+  background-position: center;
+  background-size: cover;
+  -webkit-mask-image:
+    linear-gradient(to right, transparent 0, #000 24%),
+    linear-gradient(to top, #000 0, #000 88%, transparent 100%);
+  -webkit-mask-composite: source-in;
+  mask-image:
+    linear-gradient(to right, transparent 0, #000 24%),
+    linear-gradient(to top, #000 0, #000 88%, transparent 100%);
+  mask-composite: intersect;
+}
+
+@media (max-width: 1000px) {
+  #dsh-rabbit-skin-art .rabbit-figure {
+    width: min(44vh, 40vw);
+  }
+}
+
+#dsh-rabbit-skin-art .rabbit-veil {
+  position: absolute;
+  inset: 0;
+  background-image: var(--rabbit-veil);
+  pointer-events: none;
+}
+
+/* ---- settings row ------------------------------------------------------- */
+.rabbit-row {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  padding: 16px 0;
+  border-bottom: 0.5px solid var(--dsw-alias-border-l2);
+  color: var(--dsw-alias-label-primary);
+}
+
+.rabbit-row__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+
+.rabbit-row__copy {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.rabbit-row__title {
+  font-size: 14px;
+  line-height: 20px;
+}
+
+.rabbit-row__desc {
+  color: var(--dsw-alias-label-secondary);
+  font-size: 12px;
+  line-height: 18px;
+}
+
+.rabbit-row__picker {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.rabbit-row__preview {
+  flex: none;
+  width: 66px;
+  height: 66px;
+  border-radius: var(--dsw-radius-lg);
+  background-position: center 46%;
+  background-size: 130%;
+  box-shadow:
+    inset 0 0 0 0.5px rgba(0, 0, 0, 0.12),
+    0 10px 22px -14px rgba(40, 26, 16, 0.6);
+}
+
+.rabbit-slider {
+  display: flex;
+  min-width: 0;
+  flex: 1;
+  flex-direction: column;
+  gap: 8px;
+}
+
+/* ---- the slider itself --------------------------------------------------- */
+/* One rail, one thumb, five stops. The thumb carries the current frame so the
+   control previews the rabbit you are dragging toward. */
+.rabbit-slider__input,
+.rabbit-weight__slider {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
+.rabbit-slider__input {
+  height: 26px;
+}
+
+.rabbit-weight__slider {
+  height: 20px;
+}
+
+.rabbit-slider__input:focus-visible,
+.rabbit-weight__slider:focus-visible {
+  outline: 2px solid var(--dsw-focus-ring-color);
+  outline-offset: 2px;
+  border-radius: 999px;
+}
+
+.rabbit-slider__input::-webkit-slider-runnable-track,
+.rabbit-weight__slider::-webkit-slider-runnable-track {
+  border-radius: 999px;
+  background: linear-gradient(
+    to right,
+    var(--dsw-alias-brand-primary) 0 var(--rabbit-progress, 50%),
+    var(--dsw-alias-border-l2) var(--rabbit-progress, 50%) 100%
+  );
+}
+
+.rabbit-slider__input::-webkit-slider-runnable-track {
+  height: 5px;
+}
+
+.rabbit-weight__slider::-webkit-slider-runnable-track {
+  height: 3px;
+}
+
+.rabbit-slider__input::-webkit-slider-thumb,
+.rabbit-weight__slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow:
+    0 0 0 0.5px rgba(40, 26, 16, 0.2),
+    0 2px 6px -1px rgba(40, 26, 16, 0.35);
+}
+
+.rabbit-slider__input::-webkit-slider-thumb {
+  width: 24px;
+  height: 24px;
+  margin-top: -9.5px;
+}
+
+.rabbit-weight__slider::-webkit-slider-thumb {
+  width: 18px;
+  height: 18px;
+  margin-top: -7.5px;
+}
+
+.rabbit-slider__input::-moz-range-thumb,
+.rabbit-weight__slider::-moz-range-thumb {
+  width: 22px;
+  height: 22px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff;
+}
+
+.rabbit-slider__scale {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  padding: 0 10px;
+  font-size: 12px;
+  line-height: 16px;
+  color: var(--dsw-alias-label-tertiary);
+}
+
+.rabbit-slider__tick {
+  transition: color 0.18s ease;
+}
+
+.rabbit-slider__tick[data-active="true"] {
+  color: var(--dsw-alias-label-primary);
+  font-weight: 600;
+}
+
+/* ---- composer control --------------------------------------------------- */
+.rabbit-weight {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  height: 28px;
+  padding: 0 10px;
+  border-radius: 999px;
+  color: var(--dsw-alias-label-tertiary);
+  transition: background-color 0.18s ease;
+}
+
+.rabbit-weight:hover {
+  background: var(--dsw-alias-interactive-bg-hover);
+}
+
+.rabbit-weight__label {
+  color: var(--dsw-alias-label-tertiary);
+  font-size: 12px;
+  line-height: 16px;
+  white-space: nowrap;
+}
+
+.rabbit-weight:hover .rabbit-weight__label {
+  color: var(--dsw-alias-label-secondary);
+}
+
+.rabbit-weight__slider {
+  width: 96px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  #dsh-rabbit-skin-art,
+  .rabbit-slider__tick,
+  .rabbit-weight {
+    transition: none;
+  }
+}
