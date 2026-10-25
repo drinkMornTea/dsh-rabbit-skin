@@ -34,6 +34,7 @@
     "assets/rabbit-*.webp",
     "assets/icon-180.png",
     "cordis.patch.yml",
+    "screenshots.json",
     "README.md",
     "LICENSE"
   ],

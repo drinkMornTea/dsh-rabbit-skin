@@ -1,9 +1,10 @@
-# PR target: awesome-dsh-plugin/awesome-dsh-plugin
-# file: data/plugins/drinkMornTea__dsh-rabbit-skin.yml
+# Copy this file to data/plugins/drinkMornTea__dsh-rabbit-skin.yml in
+# awesome-dsh-plugin/awesome-dsh-plugin and open a PR. Do not edit the READMEs there.
 url: https://github.com/drinkMornTea/dsh-rabbit-skin
 name: drinkMornTea/dsh-rabbit-skin
 category: theme
 description:
-  en: Paints a wooden room with a white rabbit behind the DSH window, and adds a five-step weight slider in Settings → General and beside the composer; light and dark palettes ride on the theme's alias tokens, so the user's own light/dark preference is untouched.
-  zh: 把 DSH 窗口换成木屋里的白兔，设置 → 通用与输入框右侧各有一条五档体重滑块；浅色/深色两套配色通过主题的 alias token 图层生效，不改用户自己的浅色/深色偏好。
+  en: Skin that puts a white rabbit in a wooden room behind the conversation, with a 0–4 weight slider that swaps the artwork as the rabbit gets fatter.
+  zh: 木屋白兔皮肤：白兔站在深棕木隔板前，0–4 档体重滑块会随之换图、越拖越胖。
 icon: https://raw.githubusercontent.com/drinkMornTea/dsh-rabbit-skin/main/assets/icon-180.png
+tarball: https://github.com/drinkMornTea/dsh-rabbit-skin/releases/latest/download/dsh-rabbit-skin.tgz

@@ -20,8 +20,15 @@ dsh plugin --profile web add github:drinkMornTea/dsh-rabbit-skin
 # 桌面端把 profile 换成 desktop
 ```
 
-**从插件市场装**：在 dsh-market 的「发现」里搜索 `兔子皮肤`，或在 DSH 自带的
-**插件 → 发现 → 索引源** 添加 `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`。
+**从 Release 的预构建包装**（免构建，最快）：
+
+```bash
+dsh plugin --profile desktop add https://github.com/drinkMornTea/dsh-rabbit-skin/releases/latest/download/dsh-rabbit-skin.tgz
+```
+
+**从插件市场装**：收录后它出现在 dsh-market 的「主题」页。也可以在 DSH 自带的
+**插件 → 发现 → 索引源** 添加 `https://cdn.jsdelivr.net/npm/dsh-plugin-catalog/index.json`，
+再搜 `兔子皮肤`。
 
 DSH 的 Web 与桌面是两个独立 profile，装在哪个就只在哪个生效。**从本地目录装**：
 
